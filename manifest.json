@@ -1,0 +1,72 @@
+{
+  "manifest_version": "0.3",
+  "name": "Cavalry by Canva",
+  "display_name": "Cavalry by Canva",
+  "version": "1.0.0",
+  "description": "Drive Cavalry from your LLM client. Automate repetitive motion-graphics tasks and build reusable Cavalry tools with custom UI.",
+  "long_description": "The Cavalry MCP server lets an LLM client read and manipulate scenes in the Cavalry desktop application. Use it to automate repetitive tasks, generate animation setups, or build entirely new tools and workflows that you can save for later.\n\nKey capabilities:\n- Run JavaScript directly against the open Cavalry scene\n- Save reusable scripts (with optional UI: sliders, buttons, modals) into Cavalry's script library\n- Syntax-check scripts before running them, so the LLM gets fast feedback\n\nSetup:\n\nThe Cavalry MCP server runs locally on your device. It's only active when both your MCP client and Cavalry are running. You'll need to stay up to date with the latest version of the Cavalry desktop app.\n\nTo use the Cavalry MCP server:\n- Open Cavalry by Canva\n- The MCP server is on by default; Preferences has the MCP Server configuration options\n- Install this extension in your MCP client (e.g. Claude Desktop)\n\nThe first time a client connects, Cavalry shows an approval dialog naming the app; the connection is refused until you allow it. The MCP server is local-only and does not transmit your scenes to any server.",
+  "privacy_policies": ["https://www.canva.com/policies/privacy-policy/"],
+  "homepage": "https://cavalry.studio",
+  "documentation": "https://cavalry.studio/help/ai-connector-setup/",
+  "support": "mailto:support@cavalry.studio",
+  "keywords": ["motion graphics", "animation", "2d animation", "motion design", "design", "scripting", "javascript", "automation", "procedural", "cavalry", "shader filter"],
+  "author": {
+    "name": "Canva",
+    "url": "https://cavalry.studio"
+  },
+  "icon": "icon.png",
+  "tools": [
+    {
+      "name": "read_preamble",
+      "description": "Returns the Cavalry MCP preamble. execute_script refuses to run until this has been called in the session."
+    },
+    {
+      "name": "execute_script",
+      "description": "Execute JavaScript against the open Cavalry scene and return console output and the last-evaluated value."
+    },
+    {
+      "name": "preflight_script",
+      "description": "Compile a JavaScript snippet without running it, to check for syntax errors."
+    },
+    {
+      "name": "preflight_shader",
+      "description": "Compile-check an SkSL shader/filter source without installing or running it."
+    },
+    {
+      "name": "cleanup_workspace",
+      "description": "Delete scratch files a session created in its Cavalry temp session folder."
+    },
+    {
+      "name": "list_library_scripts",
+      "description": "List the names of the scripts in the Cavalry script library."
+    },
+    {
+      "name": "read_library_script",
+      "description": "Read a script from the Cavalry script library."
+    },
+    {
+      "name": "save_script_to_library",
+      "description": "Save a completed script to the Cavalry script library for use later."
+    },
+    { "name": "search_api", "description": "Search Cavalry's JavaScript API metadata." },
+    { "name": "get_api_function", "description": "Full definition of a JavaScript API function." },
+    { "name": "search_docs", "description": "Search the bundled Cavalry documentation." },
+    { "name": "read_doc", "description": "Read one Cavalry documentation page." },
+    { "name": "search_layer_types", "description": "Search Cavalry's available layer types." },
+    { "name": "get_layer_definition", "description": "Full attribute list for a layer type." },
+    { "name": "search_examples", "description": "Search Cavalry's bundled example presets." },
+    { "name": "read_example", "description": "Read one example preset script." },
+    { "name": "snapshot_layer", "description": "Render a single layer (or the whole active composition when layerId is omitted) to a PNG for visual recognition." }
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": {
+        "SSE_URL": "http://localhost:6768/sse"
+      }
+    }
+  }
+}
